@@ -24,7 +24,6 @@ model = Sequential([
     MaxPooling2D((2, 2)),
     Conv2D(64, (3, 3), activation='relu'),
     Conv2D(64, (3, 3), activation='relu'),
-    Conv2D(64, (3, 3), activation='relu'),
     MaxPooling2D((2, 2)),
     Flatten(),
     Dense(128, activation='relu'),
@@ -37,5 +36,6 @@ model = Sequential([
 if __name__ == '__main__':
     print(model.summary())
     print(input_size+(3,))
+    
 
 
