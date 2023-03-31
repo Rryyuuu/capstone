@@ -14,20 +14,16 @@ num_classes = 2
 # Define the model
 model = Sequential([
     Input(shape=input_size+(3,)),
-    Conv2D(16, (3, 3), activation='relu'),
-    Conv2D(16, (3, 3), activation='relu'),
-    Conv2D(16, (3, 3), activation='relu'),
-    MaxPooling2D((2, 2)),
-    Conv2D(32, (3, 3), activation='relu'),
-    Conv2D(32, (3, 3), activation='relu'),
-    Conv2D(32, (3, 3), activation='relu'),
-    MaxPooling2D((2, 2)),
-    Conv2D(64, (3, 3), activation='relu'),
-    Conv2D(64, (3, 3), activation='relu'),
-    MaxPooling2D((2, 2)),
+    Conv2D(32, (3, 3), activation='relu',padding='same'),
+    MaxPooling2D((2, 2),strides=2),
+    Conv2D(64, (3, 3), activation='relu',padding='same'),
+    MaxPooling2D((2, 2),strides=2),
+    Conv2D(256, (3, 3), activation='relu',padding='same'),
+    MaxPooling2D((2, 2),strides=2),
+    Conv2D(512, (3, 3), activation='relu',padding='same'),
+    MaxPooling2D((2, 2),strides=2),
     Flatten(),
-    Dense(128, activation='relu'),
-    Dropout(0.5),
+    Dense(1024, activation='relu'),
     Dense(num_classes, activation='softmax')
 ])
 
