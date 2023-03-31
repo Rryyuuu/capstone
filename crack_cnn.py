@@ -12,8 +12,8 @@ from CNN_layers import *
 train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 
-train_generator = train_datagen.flow_from_directory(train_dir, target_size=input_size, batch_size=50,class_mode='categorical',shuffle=True)
-val_generator = val_datagen.flow_from_directory(validation_dir, target_size=input_size, batch_size=50,class_mode='categorical',shuffle=True)
+train_generator = train_datagen.flow_from_directory(train_dir, target_size=input_size, batch_size=50,class_mode='categorical')
+val_generator = val_datagen.flow_from_directory(validation_dir, target_size=input_size, batch_size=50,class_mode='categorical')
 
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
