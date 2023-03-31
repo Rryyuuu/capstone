@@ -24,7 +24,7 @@ model = Sequential([
     BatchNormalization(),
     MaxPooling2D((2, 2),strides=2),
     Flatten(),
-    Dense(256, activation='relu'),
+    Dense(128, activation='relu'),
     Dense(num_classes, activation='softmax')
 ])
 
