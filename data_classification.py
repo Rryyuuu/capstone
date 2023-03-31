@@ -48,41 +48,41 @@ if __name__ == '__main__':
   #   i+=1
 
 
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,12001)]
+  fnames = ['positive.{0:05d}.jpg'.format(i) for i in range(1,12001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(train_positive_dir, fname)
     shutil.copyfile(src, dst)
 
 
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(12001,18001)]
+  fnames = ['positive.{0:05d}.jpg'.format(i) for i in range(12001,16001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(validation_positive_dir, fname)
     shutil.copyfile(src, dst)
 
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
+  fnames = ['positive.{0:05d}.jpg'.format(i) for i in range(16001,20001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(test_positive_dir, fname)
     shutil.copyfile(src, dst)
     
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,12001)]
+  fnames = ['negative.{0:05d}.jpg'.format(i) for i in range(1,12001)]
   for fname in fnames:
-    src = os.path.join(original_dataset_positive_dir, fname)
+    src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(train_negative_dir, fname)
     shutil.copyfile(src, dst)
     
     
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(12001,18001)]
+  fnames = ['negative.{0:05d}.jpg'.format(i) for i in range(12001,16001)]
   for fname in fnames:
-    src = os.path.join(original_dataset_positive_dir, fname)
+    src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(validation_negative_dir, fname)
     shutil.copyfile(src, dst)
     
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
+  fnames = ['negative.{0:05d}.jpg'.format(i) for i in range(16001,20001)]
   for fname in fnames:
-    src = os.path.join(original_dataset_positive_dir, fname)
+    src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(test_negative_dir, fname)
     shutil.copyfile(src, dst)
     

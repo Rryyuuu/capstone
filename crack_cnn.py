@@ -9,16 +9,16 @@ from CNN_layers import *
 
 
 # Define data generators for training and validation data
-train_datagen = ImageDataGenerator(rescale=1./255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
+train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 
-train_generator = train_datagen.flow_from_directory(train_dir, target_size=input_size, batch_size=50, class_mode='categorical')
-val_generator = val_datagen.flow_from_directory(validation_dir, target_size=input_size, batch_size=50, class_mode='categorical')
+train_generator = train_datagen.flow_from_directory(train_dir, target_size=input_size, batch_size=50,class_mode='categorical')
+val_generator = val_datagen.flow_from_directory(validation_dir, target_size=input_size, batch_size=50,class_mode='categorical')
 
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
-history = model.fit(train_generator, epochs=30, validation_data=val_generator)
+history = model.fit_generator(train_generator, steps_per_epoch=40 ,epochs=10, validation_data=val_generator, validation_steps=20)
 
 model.save('C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection.h5')
