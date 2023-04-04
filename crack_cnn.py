@@ -1,8 +1,5 @@
 # Import required libraries
-import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from data_classification import *
 from CNN_layers import *
 
@@ -21,4 +18,4 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 # Train the model
 history = model.fit(train_generator, steps_per_epoch=40 ,epochs=20, validation_data=val_generator, validation_steps=20)
 
-model.save('C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection.h5')
+model.save(model_save_dir)
