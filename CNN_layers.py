@@ -1,8 +1,6 @@
 # Import required libraries
-import tensorflow as tf
-from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
-from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense, Dropout,AveragePooling2D,BatchNormalization
+from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense,BatchNormalization
 from data_classification import *
 
 # Define input size and number of classes
@@ -11,7 +9,7 @@ num_classes = 2
 
 
 # Define the model
-# Define the model
+
 model = Sequential([
     Input(shape=input_size+(3,)),
     Conv2D(32, 3, activation='relu',padding='same'),

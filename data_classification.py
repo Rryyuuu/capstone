@@ -38,14 +38,17 @@ if __name__ == '__main__':
   os.mkdir(test_positive_dir)
   os.mkdir(test_negative_dir)
   
-  # fnames = ['{0:05d}_1.jpg'.format(i) for i in range(10000,19379)]
-  # i=10000
-  # for fname in fnames:
-  #   src = os.path.join(original_dataset_positive_dir, fname)
-  #   dst = str(i)+'.jpg'
-  #   dst = os.path.join(original_dataset_positive_dir,dst)
-  #   os.rename(src,dst)
-  #   i+=1
+  #rename the file
+  '''
+  fnames = ['{0:05d}_1.jpg'.format(i) for i in range(10000,19379)]
+  i=10000
+  for fname in fnames:
+    src = os.path.join(original_dataset_positive_dir, fname)
+    dst = str(i)+'.jpg'
+    dst = os.path.join(original_dataset_positive_dir,dst)
+    os.rename(src,dst)
+    i+=1
+  '''
 
 
   fnames = ['{0:05d}.jpg'.format(i) for i in range(1,12001)]
