@@ -26,6 +26,8 @@ test_negative_dir = os.path.join(test_dir, 'Negative')
 
 model_save_dir ='C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection.h5'
 
+drone_data = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image'
+
 if __name__ == '__main__':
   os.mkdir(base_dir)
   os.mkdir(train_dir)
