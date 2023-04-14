@@ -1,0 +1,3 @@
+from keras.applications.vgg16 import preprocess_input
+
+preprocess_input

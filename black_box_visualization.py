@@ -22,17 +22,16 @@ if __name__ == '__main__':
     img_tensor = np.expand_dims(img_tensor, axis=0)
     img_tensor/=255.
 
-    layer_outputs = [layer.output for layer in model.layers[:8]]
+    layer_outputs = [layer.output for layer in model.layers[:9]]
     activation_model = models.Model(inputs = model.input, outputs = layer_outputs)
 
     activations = activation_model.predict(img_tensor)
     # first_layer_activation = activations[0]
     # plt.matshow(first_layer_activation[0, :, :, 19], cmap='viridis')
-    
-    
+  
     
     layer_names = []
-    for layer in model.layers[:8]:
+    for layer in model.layers[:9]:
         layer_names.append(layer.name)
 
     images_per_row = 16
