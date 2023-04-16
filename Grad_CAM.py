@@ -1,65 +1,94 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-from keras.models import load_model
+from keras.models import load_model,Model
 from data_classification import model_save_dir,drone_image_small_dir,test_positive_dir
-from keras.utils import load_img, img_to_array
+from keras.utils import load_img, img_to_array,array_to_img
 from keras.backend import function
 import os
 from CNN_layers import input_size
-
-# 이미지 경로 설정
-img_path = os.path.join(test_positive_dir,'18000.jpg')
-print(img_path)
-# 이미지 불러오기
-img = load_img(img_path, target_size=input_size)
-print(img)
-# 이미지를 배열로 변환
-x = img_to_array(img)
-
-# 이미지 전처리
-x = np.expand_dims(x, axis=0)
-x/=255.
+from keras.applications.vgg16 import preprocess_input
+from PIL.Image import fromarray,LANCZOS
+from tensorflow import GradientTape,argmax,reduce_mean,Variable,reduce_max,multiply,convert_to_tensor,identity,cast,reduce_sum,image,maximum
+from keras import backend as K
 
 
-#  모델 불러오기
+
+
+# Load the trained model
 model = load_model(model_save_dir)
 
-# 마지막 convolutional layer 가져오기
-last_conv_layer = model.get_layer('conv2d_2')
 
-# 모델의 출력값 가져오기
+# Specify the layer name to use for Grad-CAM
+layer_name = 'conv2d_2'
+
+img_path = os.path.join(test_positive_dir,'18000.jpg')
+img = load_img(img_path, target_size=input_size)
+x = img_to_array(img)
+x = np.expand_dims(x, axis=0)
+x = preprocess_input(x)
+
 preds = model.predict(x)
-print(preds)
-# 클래스 인덱스 가져오기
 class_idx = np.argmax(preds[0])
-print(class_idx)
-# 클래스별 가중치 가져오기
-class_output = model.output[:, class_idx]
 
-# 마지막 convolutional layer의 출력값과 클래스별 가중치를 곱하기
-grads = function([model.input], [last_conv_layer.output, class_output])([x])
-conv_output, class_weights = grads[0], grads[1]
-cam = np.zeros((conv_output.shape[1], conv_output.shape[2]), dtype=np.float32)
+last_conv_layer = model.get_layer(layer_name)
 
-# 가중치와 convolutional layer 출력값을 곱하여 heatmap 생성
-for i, w in enumerate(class_weights[0]):
-    cam += w * conv_output[0, :, :, i]
+grads = K.gradients(model.output[:, class_idx], last_conv_layer.output)[0]
 
-# heatmap을 0~1 범위로 정규화
-cam /= np.max(cam)
+pooled_grads = K.mean(grads, axis=(0, 1, 2))
 
-# heatmap 리사이즈
-cam = cv2.resize(cam, input_size)
+heatmap_fn = K.function([model.input], [pooled_grads, last_conv_layer.output[0]])
 
-# heatmap을 원본 이미지에 적용
-heatmap = cv2.applyColorMap(np.uint8(255*cam), cv2.COLORMAP_JET)
-heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
 
-# heatmap과 원본 이미지 결합
-superimposed_img = cv2.addWeighted(cv2.cvtColor(np.uint8(x[0]), cv2.COLOR_RGB2BGR), 0.6, heatmap, 0.4, 0)
-
-# 결과 이미지 출력
-plt.imshow(superimposed_img)
+# Plot the original image and the CAM heatmap
+plt.imshow(img)
+plt.imshow(cam, cmap='jet', alpha=0.5)
 plt.show()
 
+
+
+
+
+
+
+
+'''
+# Specify the layer name to use for Grad-CAM
+layer_name = 'conv2d_2'
+
+img = load_img(img_path,target_size=input_size)
+
+x = img_to_array(img)
+x = np.expand_dims(x, axis=0)
+x = preprocess_input(x)
+
+preds = model.predict(x)
+
+crack_index = np.argmax(preds[0])
+print(crack_index)
+crack_output = model.output[:,crack_index]
+print(crack_output)
+last_conv_layer = model.get_layer('conv2d_2')
+print(last_conv_layer)
+grads = K.gradients(crack_output,last_conv_layer.output)
+print(grads)
+
+pooled_grads = K.function(grads, axis=(0,1,2))
+
+
+iterate = K.function([model.input],
+                     [pooled_grads, last_conv_layer.output[0]])
+
+pooled_grads_value, conv_layer_output_value = iterate([0])
+
+for i in range(128):
+    conv_layer_output_value[:, :, i]*= pooled_grads_value[i]
+
+heatmap = np.mean(conv_layer_output_value, axis =-1) 
+
+
+heatmap = np.maximum(heatmap, 0)
+heatmap /= np.max(heatmap)
+plt.matshow(heatmap)   
+
+'''

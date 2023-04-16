@@ -28,7 +28,7 @@ model_save_dir ='C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection.h
 
 drone_image_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image'
 drone_image_small_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_small'
-
+drone_image_test_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test'
 
 
 if __name__ == '__main__':

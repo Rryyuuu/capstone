@@ -16,6 +16,6 @@ val_generator = val_datagen.flow_from_directory(validation_dir, target_size=inpu
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
-history = model.fit(train_generator, steps_per_epoch=40 ,epochs=20, validation_data=val_generator, validation_steps=20)
+history = model.fit(train_generator, steps_per_epoch=40 ,epochs=20, validation_data=val_generator, validation_steps=40)
 
 model.save(model_save_dir)
