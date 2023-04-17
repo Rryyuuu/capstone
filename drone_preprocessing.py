@@ -5,7 +5,7 @@ import os
 
 if __name__ == '__main__':
 
-    drone_image_path = os.path.join(drone_image_dir,'drone_image_5.tif')
+    drone_image_path = os.path.join(drone_image_dir,'drone_image_6.tif')
 
     # 이미지 파일 열기
     img = Image.open(drone_image_path)
@@ -30,7 +30,8 @@ if __name__ == '__main__':
     # 타일의 개수 계산
     num_tiles_width = int(width / tile_width)
     num_tiles_height = int(height / tile_height)
-
+    
+    os.mkdir(drone_image_small_dir)
     # 타일 분할 시작
     for i in range(num_tiles_width):
         for j in range(num_tiles_height):
