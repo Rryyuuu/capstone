@@ -23,7 +23,7 @@ if __name__ == '__main__':
     img_tensor = np.expand_dims(img_tensor, axis=0)
     img_tensor/=255.
 
-    layer_outputs = [layer.output for layer in model.layers[:9]]
+    layer_outputs = [layer.output for layer in model.layers[:12]]
     activation_model = models.Model(inputs = model.input, outputs = layer_outputs)
 
     activations = activation_model.predict(img_tensor)
@@ -32,7 +32,7 @@ if __name__ == '__main__':
   
     
     layer_names = []
-    for layer in model.layers[:9]:
+    for layer in model.layers[:12]:
         layer_names.append(layer.name)
 
     images_per_row = 16

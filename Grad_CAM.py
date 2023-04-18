@@ -15,7 +15,7 @@ model = load_model(model_save_dir)
 
 
 # Specify the layer name to use for Grad-CAM
-layer_name = 'conv2d_5'
+layer_name = 'conv2d_4'
 
 # Load the test image
 img_path = os.path.join(test_positive_dir,'18000.jpg')
@@ -28,13 +28,13 @@ x = preprocess_input(x)
 
 # Make a prediction on the image
 preds = model.predict(x)
-
+print(preds[0].shape)
 # Get the index of the predicted class
 crack_index = np.argmax(preds[0])
 print(crack_index)
 # Get the output of the predicted class
 crack_output = model.output[:, crack_index]
-print('this is output',crack_output)
+print('this is output: ',crack_output)
 # Get the last convolutional layer of the model
 last_conv_layer = model.get_layer(layer_name)
 print(last_conv_layer)
@@ -60,7 +60,7 @@ for var, grad in zip(model.trainable_variables, grads):
 '''
 # Compute the gradients of the predicted class with respect to the last conv layer
 with GradientTape() as tape:
-    grads = tape.gradient(last_conv_layer.output,crack_output)[0]
+    grads = tape.gradient(crack_output,last_conv_layer.output)[0]
 print(grads)
 # Compute the mean of the gradients over each feature map
 pooled_grads = function([model.input], [grads, last_conv_layer.output])[0]
