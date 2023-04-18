@@ -13,22 +13,20 @@ num_classes = 2
 model = Sequential([
     Input(shape=input_size+(3,)),
     Conv2D(32, 3, activation='relu',padding='same'),
-    Conv2D(32, 3, activation='relu',padding='same'),
     BatchNormalization(),
     MaxPooling2D((2, 2),strides=2),
-    Conv2D(64, 3, activation='relu',padding='same'),
     Conv2D(64, 3, activation='relu',padding='same'),
     BatchNormalization(),
     MaxPooling2D((2, 2),strides=2),
     Conv2D(128, 3, activation='relu',padding='same'),
-    Conv2D(128, 3, activation='relu',padding='same'),
+    BatchNormalization(),
+    MaxPooling2D((2, 2),strides=2),
+    Conv2D(256, 3, activation='relu',padding='same'),
     BatchNormalization(),
     MaxPooling2D((2, 2),strides=2),
     Flatten(),
-    Dense(256, activation='relu'),
     Dropout(0.5),
-    Dense(128, activation='relu'),
-    Dropout(0.5),
+    Dense(512, activation='relu'),
     Dense(num_classes, activation='softmax')
 ])
 

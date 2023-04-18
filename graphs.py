@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from crack_cnn import history
+from train_cnn import history
 
 # Plot the accuracy
 acc = history.history['accuracy']
