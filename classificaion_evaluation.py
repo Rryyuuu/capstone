@@ -1,5 +1,5 @@
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from data_classification import test_dir,model_save_dir,drone_image_test_dir
+from data_classification import test_dir,model_save_dir,drone_image_test_dir,validation_dir
 from CNN_layers import input_size
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ import os
 
 if __name__ == '__main__':
     test_datagen = ImageDataGenerator(rescale=1./255)
-    test_generator = test_datagen.flow_from_directory(drone_image_test_dir, target_size=input_size, batch_size=60,class_mode='categorical')
+    test_generator = test_datagen.flow_from_directory(validation_dir, target_size=input_size, batch_size=1,class_mode='categorical')
 
     y_true=[]
 
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         file_layer = os.path.basename(dir_name)
         if file_layer == 'Positive':
             y_true.append(1)
-        if file_layer == 'Negative':
+        else:
             y_true.append(0)
 
 

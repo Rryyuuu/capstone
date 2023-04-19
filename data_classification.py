@@ -3,6 +3,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 #main dir
+original_dataset_dir = 'C:/Users/ryu/Desktop/main_data/gis/Concrete_Crack_Images'
 original_dataset_positive_dir = 'C:/Users/ryu/Desktop/main_data/gis/Concrete_Crack_Images/Positive'
 original_dataset_negative_dir = 'C:/Users/ryu/Desktop/main_data/gis/Concrete_Crack_Images/Negative'
 
@@ -56,44 +57,45 @@ if __name__ == '__main__':
   '''
 
 
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,12001)]
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,18001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(train_positive_dir, fname)
     shutil.copyfile(src, dst)
 
 
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(12001,16001)]
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(validation_positive_dir, fname)
     shutil.copyfile(src, dst)
-
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(16001,20001)]
+  '''
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
   for fname in fnames:
     src = os.path.join(original_dataset_positive_dir, fname)
     dst = os.path.join(test_positive_dir, fname)
     shutil.copyfile(src, dst)
-    
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,12001)]
+    '''
+
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(1,18001)]
   for fname in fnames:
     src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(train_negative_dir, fname)
     shutil.copyfile(src, dst)
     
     
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(12001,16001)]
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
   for fname in fnames:
     src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(validation_negative_dir, fname)
     shutil.copyfile(src, dst)
-    
-  fnames = ['{0:05d}.jpg'.format(i) for i in range(16001,20001)]
+  '''
+  fnames = ['{0:05d}.jpg'.format(i) for i in range(18001,20001)]
   for fname in fnames:
     src = os.path.join(original_dataset_negative_dir, fname)
     dst = os.path.join(test_negative_dir, fname)
     shutil.copyfile(src, dst)
-    
+  '''  
     
     
     
