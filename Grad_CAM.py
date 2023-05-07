@@ -10,16 +10,16 @@ from data_classification import model_save_dir, drone_image_small_dir, validatio
 from PIL import Image
 from CNN_layers import input_size
 import keras
-
+from keras.preprocessing.image import ImageDataGenerator
 
 def get_img_array(img_path, size):
     # Load image and convert to numpy array
     img = load_img(img_path, target_size=size)
-    img_array = img_to_array(img)
-    # Expand dimensions to match input shape of model
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = preprocess_input(img_array)
-    return img_array
+    img_tensor = img_to_array(img)
+    img_tensor = np.expand_dims(img_tensor, axis=0)
+    img_tensor/=255.
+
+    return img_tensor
 
 if __name__=='__main__':
     # Load the trained model
@@ -29,50 +29,29 @@ if __name__=='__main__':
     layer_name = 'conv2d_11'
 
     # Load the test image
-    img_path = os.path.join(validation_positive_dir,'19000.jpg')
+    img_path = os.path.join(validation_positive_dir,'18458.jpg')
     
     img_array = get_img_array(img_path, input_size)
     
-    preds = model.predict(img_array)
-    class_idx = np.argmax(preds[0])
+    pred = model.predict(img_array)
+    class_idx = np.argmax(pred[0])
     class_output = model.output[:, class_idx]
     last_conv_layer = model.get_layer(layer_name)
-    grad_model = Model([model.inputs], [last_conv_layer.output, model.output])
+    grad_model = Model([model.inputs], [model.get_layer(layer_name).output, model.output])
     
     with GradientTape() as tape:
         conv_output, preds = grad_model(img_array)
-        grads = tape.gradient(preds, conv_output)[0]
+        loss = preds[:, class_idx]
+        grads = tape.gradient(loss, conv_output)[0]
 
     # Compute the channel-wise mean of the gradients and the feature maps
     weights = reduce_mean(grads, axis=(0, 1))
-    cam = reduce_sum(multiply(weights, conv_output), axis=-1)
+    cam = np.dot(conv_output[0], weights.numpy())
 
-    # Resize the heatmap to the original image size and normalize it
-    heatmap = cv2.resize(cam.numpy(), (input_size[1], input_size[0]))
-    heatmap = heatmap - np.min(heatmap)
-    heatmap = heatmap / np.max(heatmap)
-    heatmap = cv2.cvtColor(heatmap,cv2.COLOR_BGR2GRAY)
+    cam = cv2.resize(cam, (img_array.shape[2], img_array.shape[1]))
+    cam = np.maximum(cam, 0)
+    cam = cam / cam.max()
     
-    '''
-    # Apply the heatmap to the original image
-    img = cv2.imread(img_path)
-    heatmap = cv2.applyColorMap(np.uint8(255 * heatmap), cv2.COLORMAP_JET)
-    superimposed_img = cv2.addWeighted(img, 0.6, heatmap, 0.4, 0)
-
-    # Plot the results
-    plt.imshow(img)
-    plt.title('Original Image')
-    plt.axis('off')
-    plt.show()
-
-    plt.imshow(superimposed_img)
-    plt.title('Grad-CAM')
-    plt.axis('off')
-    plt.show()
-    '''
-    # Plot the heatmap on top of the original image
-    img = plt.imread(img_path)
-    fig, ax = plt.subplots()
-    ax.imshow(img)
-    ax.imshow(heatmap, cmap='jet', alpha=0.5)
+    plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
+    plt.imshow(cam, cmap='jet', alpha=0.5)
     plt.show()

@@ -19,7 +19,6 @@ if __name__ == '__main__':
     img_path =os.path.join(train_positive_dir,'05000.jpg')
     img = load_img(img_path,target_size = input_size)
     img_tensor = img_to_array(img)
-    print(img_tensor.shape)
     img_tensor = np.expand_dims(img_tensor, axis=0)
     img_tensor/=255.
 
