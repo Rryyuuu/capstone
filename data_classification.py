@@ -26,10 +26,13 @@ test_negative_dir = os.path.join(test_dir, 'Negative')
 
 
 model_save_dir ='C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection.h5'
+model_save_dir_2 ='C:/Users/ryu/Desktop/main_data/gis/model_save/crack_detection_2.h5'
 
 drone_image_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image'
 drone_image_small_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_small'
 drone_image_test_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test'
+drone_image_test_positive_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test/positive'
+drone_image_test_negative_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test/negative'
 
 
 if __name__ == '__main__':

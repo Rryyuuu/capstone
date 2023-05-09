@@ -5,7 +5,7 @@ import os
 
 if __name__ == '__main__':
 
-    drone_image_path = os.path.join(drone_image_dir,'drone_image_6.tif')
+    drone_image_path = os.path.join(drone_image_dir,'drone_image_5.tif')
 
     # 이미지 파일 열기
     img = Image.open(drone_image_path)
