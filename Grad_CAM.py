@@ -28,32 +28,43 @@ if __name__=='__main__':
     # Specify the layer name to use for Grad-CAM
     layer_name = 'conv2d_11'
     # img_name = 'tile_15_11.tif'
-    for filename in os.listdir(validation_positive_dir):
+    for filename in os.listdir(drone_image_small_dir):
     # Load the test image
-        img_path = os.path.join(validation_positive_dir,filename)
+        img_path = os.path.join(drone_image_small_dir,filename)
         
         img_array = get_img_array(img_path, input_size)
         
         pred = model.predict(img_array)
-        class_idx = np.argmax(pred[0])
-        class_output = model.output[:, class_idx]
-        last_conv_layer = model.get_layer(layer_name)
-        grad_model = Model([model.inputs], [model.get_layer(layer_name).output, model.output])
         
-        with GradientTape() as tape:
-            conv_output, preds = grad_model(img_array)
-            loss = preds[:, class_idx]
-            grads = tape.gradient(loss, conv_output)[0]
+        try:
+            if pred[0][0]<pred[0][1]:
+                class_idx = np.argmax(pred[0])
+                class_output = model.output[:, class_idx]
+                last_conv_layer = model.get_layer(layer_name)
+                grad_model = Model([model.inputs], [model.get_layer(layer_name).output, model.output])
+                
+                with GradientTape() as tape:
+                    conv_output, preds = grad_model(img_array)
+                    loss = preds[:, class_idx]
+                    grads = tape.gradient(loss, conv_output)[0]
 
-        # Compute the channel-wise mean of the gradients and the feature maps
-        weights = reduce_mean(grads, axis=(0, 1))
-        cam = np.dot(conv_output[0], weights.numpy())
+                # Compute the channel-wise mean of the gradients and the feature maps
+                weights = reduce_mean(grads, axis=(0, 1))
+                cam = np.dot(conv_output[0], weights.numpy())
 
-        cam = cv2.resize(cam, (img_array.shape[2], img_array.shape[1]))
-        cam = np.maximum(cam, 0)
-        cam = cam / cam.max()
-        
-        plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
-        plt.imshow(cam, cmap='jet', alpha=0.5)
-        plt.savefig('C:/Users/ryu/Desktop/main_data/gis/test_heatmap/{}.png'.format(filename))
-        # plt.show()
+                cam = cv2.resize(cam, (img_array.shape[2], img_array.shape[1]))
+                cam = np.maximum(cam, 0)
+                cam = cam / cam.max()
+                
+                plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
+                plt.imshow(cam, cmap='jet', alpha=0.5)
+                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+                # plt.show()
+            else:
+                plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
+                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+        except:
+            plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
+            plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+            
+                
