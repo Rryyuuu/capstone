@@ -41,6 +41,6 @@ if __name__ == '__main__':
             # 타일 분할
             tile = img.crop((x, y, x+tile_width, y+tile_height))
             # 타일 저장
-            drone_image_small_path = os.path.join(drone_image_small_dir,f'tile_{i}_{j}.tif')
+            drone_image_small_path = os.path.join(drone_image_small_dir,f'tile_%02d_%02d.tif'%(i,j))
             
             tile.save(drone_image_small_path)

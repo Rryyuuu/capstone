@@ -58,13 +58,16 @@ if __name__=='__main__':
                 
                 plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
                 plt.imshow(cam, cmap='jet', alpha=0.5)
-                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+                plt.axis('off')
+                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.tif'.format(filename), format = 'tif',bbox_inches='tight', pad_inches=0, transparent=True)
                 # plt.show()
             else:
                 plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
-                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+                plt.axis('off')
+                plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.tif'.format(filename), format = 'tif',bbox_inches='tight', pad_inches=0, transparent=True)
         except:
             plt.imshow(cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB))
-            plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.png'.format(filename))
+            plt.axis('off')
+            plt.savefig('C:/Users/ryu/Desktop/main_data/gis/drone_heatmap/{}.tif'.format(filename), format = 'tif',bbox_inches='tight', pad_inches=0, transparent=True)
             
                 

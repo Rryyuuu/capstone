@@ -33,7 +33,7 @@ drone_image_small_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_small'
 drone_image_test_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test'
 drone_image_test_positive_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test/positive'
 drone_image_test_negative_dir = 'C:/Users/ryu/Desktop/main_data/gis/Drone_image_test/negative'
-
+drone_heatmap_dir = "C:/Users/ryu/Desktop/main_data/gis/drone_heatmap"
 
 if __name__ == '__main__':
   os.mkdir(base_dir)

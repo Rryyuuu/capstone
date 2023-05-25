@@ -1,33 +1,33 @@
 from PIL import Image
-from drone_preprocessing import num_tiles_width, num_tiles_height
 from data_classification import *
 import os
+from PIL import Image
+
+
+# Save the reassembled image
 
 if __name__=='__main__':
-    # Define the number of rows and columns
-    rows = num_tiles_height
-    columns = num_tiles_width
 
-    image_path = drone_image_dir
-    image_name = os.path.join(image_path, 'drone_image_5')
-    # Open and get the size of the first sub-image
-    sub_image = Image.open("sub_image_0.jpg")
-    sub_width, sub_height = sub_image.size
+    image_paths = drone_heatmap_dir
+    output_path ="C:/Users/ryu/Desktop/main_data/gis/heatmap/combine_heatmap_2.jpg"
+    original_path = "C:/Users/ryu/Desktop/main_data/gis/Drone_image/drone_image_5.tif"
 
-    # Calculate the total width and height of the combined image
-    total_width = sub_width * columns
-    total_height = sub_height * rows
+    original_image = Image.open(original_path)
+    filepath_list = [os.path.join(image_paths,filename) for filename in os.listdir(image_paths)]
+    patches = [Image.open(path) for path in filepath_list]
+    patch_width , patch_height =  patches[0].size
+    width ,height = original_image.size 
+    # Create a new blank image to reassemble the patches
+    reassembled_image = Image.new('RGB', (width, height))
+    
+    # Assemble the patches back into the new image
+    x_offset = 0
+    y_offset = 0
+    for patch in patches:
+        reassembled_image.paste(patch, (x_offset, y_offset))
+        y_offset += patch_height
+        if y_offset >= height:
+            y_offset = 0
+            x_offset += patch_width
 
-    # Create a new blank image with the size of the combined image
-    combined_image = Image.new("RGB", (total_width, total_height))
-
-    # Iterate through the sub-images and paste them onto the combined image
-    for i in range(rows):
-        for j in range(columns):
-            index = i * columns + j
-            sub_image_path = f"sub_image_{index}.jpg"
-            sub_image = Image.open(sub_image_path)
-            combined_image.paste(sub_image, (j * sub_width, i * sub_height))
-
-    # Save the merged image
-    combined_image.save("merged_image.jpg")
+    reassembled_image.save(output_path)  # Replace 'reassembled_image.jpg' with your desired output file name
